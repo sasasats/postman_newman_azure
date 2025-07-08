@@ -1,0 +1,293 @@
+{
+	"info": {
+		"_postman_id": "f2daf4d8-d46a-4dc5-b1b4-82954ae8acf7",
+		"name": "test.jsonplaceholder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19311466",
+		"_collection_link": "https://www.postman.com/payload-architect-89349374/workspace/postmantest/collection/19311466-f2daf4d8-d46a-4dc5-b1b4-82954ae8acf7?action=share&source=collection_link&creator=19311466"
+	},
+	"item": [
+		{
+			"name": "get_all_posts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is JSON\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"pm.test(\"posts are sorted by id\", function () {",
+							"    const jsonData = pm.response.json();",
+							"",
+							"    for (let i = 0; i < jsonData.length - 1; i++) {",
+							"        pm.expect(jsonData[i].id).to.be.at.most(jsonData[i + 1].id);",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}posts/",
+					"host": [
+						"{{URL}}posts"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_post_99",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Post information is correct\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.userId).to.eql(10);",
+							"    pm.expect(jsonData.id).to.eql(99);",
+							"    pm.expect(jsonData.title).to.not.be.empty;",
+							"    pm.expect(jsonData.body).to.not.be.empty;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}posts/99",
+					"host": [
+						"{{URL}}posts"
+					],
+					"path": [
+						"99"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_post_150",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Response body is empty object\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.be.an(\"object\").that.is.empty;",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}posts/150",
+					"host": [
+						"{{URL}}posts"
+					],
+					"path": [
+						"150"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_post",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const randomTitle = \"Title_\" + Math.floor(Math.random() * 10000);",
+							"const randomBody = \"Body_\" + Math.floor(Math.random() * 10000);",
+							"",
+							"pm.variables.set(\"randomTitle\", randomTitle);",
+							"pm.variables.set(\"randomBody\", randomBody);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Post information is correct\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    ",
+							"    pm.expect(jsonData.userId).to.eql(1);",
+							"    pm.expect(jsonData).to.have.property(\"id\");",
+							"    pm.expect(jsonData.id).to.be.not.null;",
+							"    pm.expect(jsonData.id).to.be.not.undefined;",
+							"    pm.expect(jsonData.title).to.eql(pm.variables.get(\"randomTitle\"));",
+							"    pm.expect(jsonData.body).to.eql((pm.variables.get(\"randomBody\")));",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 1,\n    \"id\": 101,\n    \"title\": \"{{randomTitle}}\",\n    \"body\": \"{{randomBody}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}posts/",
+					"host": [
+						"{{URL}}posts"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"const expectedResponses = JSON.parse(pm.environment.get(\"expectedResponses\"));",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"The list in response body is json\", function () {",
+							"    pm.expect(jsonData).to.be.an(\"array\");",
+							"});",
+							"",
+							"pm.test(\"User 5 data is correct\", function () { ",
+							"    pm.expect(jsonData[4]).to.eql(expectedResponses[\"expectedUser\"]);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}users",
+					"host": [
+						"{{URL}}users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_user_5",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"const expectedResponses = JSON.parse(pm.environment.get(\"expectedResponses\"));",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"User 5 data is correct\", function () {",
+							"    pm.expect(jsonData).to.eql(expectedResponses[\"expectedUser\"]);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}users/5",
+					"host": [
+						"{{URL}}users"
+					],
+					"path": [
+						"5"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

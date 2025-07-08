@@ -1,0 +1,16 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Allure reports
+allure-results/
+allure-report/
+
+# VSCode settings
+.vscode/
+
+# macOS/Linux system files
+.DS_Store
+.idea/
+*.swp
