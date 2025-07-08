@@ -1,0 +1,22 @@
+{
+  "name": "postmanproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "setup.js",
+  "scripts": {
+    "setup:test": "node setup.js test",
+    "setup:prod": "node setup.js prod",
+    "run:test": "node run.js test",
+    "run:prod": "node run.js prod"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "newman": "^6.2.1"
+  },
+  "devDependencies": {
+    "newman-reporter-allure": "^3.3.0"
+  }
+}
